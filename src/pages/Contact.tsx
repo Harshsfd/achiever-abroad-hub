@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { sendContactForm } from "@/api";
 import {
   Phone,
   Mail,
@@ -23,14 +24,24 @@ const ContactPage = () => {
   });
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    
+    try {
+      await sendContactForm(formData);
+      toast({
+        title: "Message Sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again later.",
+        variant: "destructive",
+      });
+      console.error("Error sending contact form:", error);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

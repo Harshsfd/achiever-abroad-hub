@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { getServices } from "@/api";
 import {
   MessageSquare,
   GraduationCap,
@@ -12,8 +14,33 @@ import {
   Home,
 } from "lucide-react";
 
+interface Service {
+  _id: string;
+  title: string;
+  description: string;
+  features: string[];
+  icon: string;
+}
+
 const ServicesPage = () => {
-  const services = [
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Icon mapping for dynamic icons from backend
+  const iconMap: { [key: string]: any } = {
+    MessageSquare,
+    GraduationCap,
+    Search,
+    DollarSign,
+    Award,
+    CreditCard,
+    Plane,
+    Home,
+  };
+
+  // Fallback services in case backend is not available
+  const fallbackServices = [
     {
       icon: MessageSquare,
       title: "Free Counselling",
@@ -104,6 +131,42 @@ const ServicesPage = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await getServices();
+        setServices(data);
+      } catch (err) {
+        console.error("Error fetching services:", err);
+        setError("Using fallback services");
+        // Use fallback services if API fails
+        setServices(fallbackServices.map((service, index) => ({
+          _id: index.toString(),
+          title: service.title,
+          description: service.description,
+          features: service.features,
+          icon: service.icon.name || "MessageSquare",
+        })));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-muted-foreground">Loading services...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -119,31 +182,34 @@ const ServicesPage = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-          {services.map((service, index) => (
-            <Card key={index} className="border-border/50 hover:shadow-lg transition-all duration-300">
-              <CardHeader>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary-light rounded-full flex items-center justify-center">
-                    <service.icon className="w-6 h-6 text-primary-foreground" />
+          {services.map((service) => {
+            const IconComponent = iconMap[service.icon] || MessageSquare;
+            return (
+              <Card key={service._id} className="border-border/50 hover:shadow-lg transition-all duration-300">
+                <CardHeader>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary-light rounded-full flex items-center justify-center">
+                      <IconComponent className="w-6 h-6 text-primary-foreground" />
+                    </div>
+                    <CardTitle className="text-xl text-foreground">{service.title}</CardTitle>
                   </div>
-                  <CardTitle className="text-xl text-foreground">{service.title}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {service.description}
-                </p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-muted-foreground">
-                      <div className="w-1.5 h-1.5 bg-accent rounded-full mr-3 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                    {service.description}
+                  </p>
+                  <ul className="space-y-2">
+                    {service.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center text-sm text-muted-foreground">
+                        <div className="w-1.5 h-1.5 bg-accent rounded-full mr-3 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* CTA Section */}
