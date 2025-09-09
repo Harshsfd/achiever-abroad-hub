@@ -1,5 +1,5 @@
 // API configuration
-const API_URL = "http://localhost:5000/api"; // Change this for production
+const API_URL = import.meta.env.VITE_API_URL; // Reads from environment variable
 
 // Helper function for making API requests
 async function apiRequest(endpoint: string, options: RequestInit = {}) {
