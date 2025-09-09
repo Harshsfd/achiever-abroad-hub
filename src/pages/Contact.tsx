@@ -191,7 +191,7 @@ const ContactPage = () => {
                   asChild
                 >
                   <a 
-                    href="https://wa.me/+91 999142787" 
+                    href="https://wa.me/919991942787" 
                     target="_blank" 
                     rel="noopener noreferrer"
                   >
