@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, User, ArrowRight, Clock } from "lucide-react";
+import { getBlogs } from "@/api";
 
 interface Blog {
   _id: string;
