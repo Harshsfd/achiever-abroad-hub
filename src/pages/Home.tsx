@@ -10,40 +10,61 @@ import {
   Home,
 } from "lucide-react";
 import heroImage from "@/assets/hero-study-abroad.jpg";
+import { useState } from "react";
 
 const HomePage = () => {
   const services = [
     {
       icon: MessageSquare,
       title: "Free Counselling",
-      description: "Get expert guidance to choose the right program and university that matches your profile and career goals.",
+      description:
+        "Get expert guidance to choose the right program and university that matches your profile and career goals.",
     },
     {
       icon: GraduationCap,
       title: "Guaranteed Admission",
-      description: "We ensure your admission to top universities with our proven track record and strong partnerships.",
+      description:
+        "We ensure your admission to top universities with our proven track record and strong partnerships.",
     },
     {
       icon: DollarSign,
       title: "Best Scholarships",
-      description: "Access exclusive scholarships and financial aid opportunities to make your dream affordable.",
+      description:
+        "Access exclusive scholarships and financial aid opportunities to make your dream affordable.",
     },
     {
       icon: Award,
       title: "Government Scholarship Assistance",
-      description: "Complete support for government scholarship applications and procedures.",
+      description:
+        "Complete support for government scholarship applications and procedures.",
     },
     {
       icon: Plane,
       title: "Visa Assistance",
-      description: "End-to-end visa support with document preparation and interview coaching.",
+      description:
+        "End-to-end visa support with document preparation and interview coaching.",
     },
     {
       icon: Home,
       title: "Accommodation Support",
-      description: "Find safe and comfortable housing options near your chosen university.",
+      description:
+        "Find safe and comfortable housing options near your chosen university.",
     },
   ];
+
+  // ✅ Country Data
+  const countryData = {
+    UK: ["University of Oxford", "University of Cambridge", "Imperial College London"],
+    USA: ["Harvard University", "MIT", "Stanford University"],
+    Canada: ["University of Toronto", "McGill University", "University of British Columbia"],
+    Australia: ["University of Melbourne", "Australian National University", "University of Sydney"],
+    Ireland: ["Trinity College Dublin", "University College Dublin"],
+    Europe: ["ETH Zurich", "University of Amsterdam", "LMU Munich"],
+    "New Zealand": ["University of Auckland", "University of Otago"],
+  };
+
+  // ✅ State to track selected country
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   return (
     <div className="min-h-screen">
@@ -57,21 +78,21 @@ const HomePage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-accent/20" />
         </div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             Achievers Study Abroad Consultant
             <span className="block text-2xl md:text-3xl text-primary mt-2">(A-SAC)</span>
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-3xl mx-auto">
             Helping students achieve their dream of studying abroad
           </p>
-          
+
           <p className="text-lg md:text-xl text-black font-semibold mb-8 italic">
             "You are the dreamers, We will make you achievers"
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="cta" size="lg" asChild>
               <Link to="/contact">Get Free Counselling</Link>
@@ -94,7 +115,7 @@ const HomePage = () => {
               Comprehensive support for your study abroad journey with guaranteed results
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <ServiceCard
@@ -130,15 +151,39 @@ const HomePage = () => {
             Study Destinations We Cover
           </h2>
           <div className="flex flex-wrap justify-center gap-6">
-            {["UK", "USA", "Canada", "Australia", "Ireland", "Europe", "New Zealand"].map((country) => (
-              <div
+            {Object.keys(countryData).map((country) => (
+              <button
                 key={country}
-                className="px-6 py-3 bg-gradient-to-r from-accent/20 to-accent-light/20 rounded-full border border-accent/30"
+                onClick={() => setSelectedCountry(country)}
+                className={`px-6 py-3 rounded-full border font-semibold transition ${
+                  selectedCountry === country
+                    ? "bg-primary text-white border-primary"
+                    : "bg-gradient-to-r from-accent/20 to-accent-light/20 border-accent/30 text-foreground hover:bg-accent/30"
+                }`}
               >
-                <span className="font-semibold text-foreground">{country}</span>
-              </div>
+                {country}
+              </button>
             ))}
           </div>
+
+          {/* ✅ Show Colleges if a country is selected */}
+          {selectedCountry && (
+            <div className="mt-12 text-left max-w-3xl mx-auto">
+              <h3 className="text-2xl font-bold mb-6">
+                Top Universities in {selectedCountry}
+              </h3>
+              <ul className="space-y-4">
+                {countryData[selectedCountry].map((college, index) => (
+                  <li
+                    key={index}
+                    className="p-4 bg-accent/10 rounded-lg shadow text-lg"
+                  >
+                    {college}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
     </div>
