@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from "emailjs-com";
 
 import {
   Phone,
@@ -26,13 +27,20 @@ const ContactPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
-      await sendContactForm(formData);
+      await emailjs.send(
+        "service_8r7tgwr",   // 🔹 Replace with your EmailJS Service ID
+        "template_wsmxsmj",  // 🔹 Replace with your Template ID
+        formData,
+        "vqOHx4Ee_Dez3LplF"    // 🔹 Replace with your Public Key
+      );
+
       toast({
         title: "Message Sent!",
         description: "We'll get back to you within 24 hours.",
       });
+
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch (error) {
       toast({
@@ -44,7 +52,9 @@ const ContactPage = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
