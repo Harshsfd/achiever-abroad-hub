@@ -68,7 +68,7 @@ const HomePage = () => {
             Helping students achieve their dream of studying abroad
           </p>
           
-          <p className="text-lg md:text-xl text-accent font-semibold mb-8 italic">
+          <p className="text-lg md:text-xl text-black font-semibold mb-8 italic">
             "You are the dreamers, We will make you achievers"
           </p>
           
