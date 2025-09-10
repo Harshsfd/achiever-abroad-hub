@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 
 import {
   Phone,
