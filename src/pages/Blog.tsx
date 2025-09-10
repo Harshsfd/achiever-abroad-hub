@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getBlogs } from "@/api";
 import { CalendarDays, User, ArrowRight, Clock } from "lucide-react";
 
 interface Blog {
