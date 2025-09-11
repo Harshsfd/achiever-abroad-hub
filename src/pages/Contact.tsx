@@ -30,10 +30,10 @@ const ContactPage = () => {
 
     try {
       await emailjs.send(
-        "service_8r7tgwr",   // 🔹 Replace with your EmailJS Service ID
-        "template_wsmxsmj",  // 🔹 Replace with your Template ID
+        "____",   // 🔹 Replace with your EmailJS Service ID
+        "____",  // 🔹 Replace with your Template ID
         formData,
-        "vqOHx4Ee_Dez3LplF"    // 🔹 Replace with your Public Key
+        "____"    // 🔹 Replace with your Public Key
       );
 
       toast({
