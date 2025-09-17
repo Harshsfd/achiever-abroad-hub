@@ -176,5 +176,3 @@ All rights reserved © 2025.
 ---
 
 <p align="center">Made with ❤️ by <b>Harsh Bhardwaj</b></p>
-```
-
